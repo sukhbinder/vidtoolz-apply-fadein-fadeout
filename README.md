@@ -24,6 +24,26 @@ vidtoolz install vidtoolz-apply-fadein-fadeout
 
 type ``vid fadeinout --help`` to get help
 
+```bash
+usage: vid fadeinout [-h] [-d DURATION] [-o OUTPUT]
+                     video {fadein,fadeout,both}
+
+Apply fadein-fadeout effects on videos
+
+positional arguments:
+  video                 Path to the input video file.
+  {fadein,fadeout,both}
+                        Type of fade effect to apply.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d DURATION, --duration DURATION
+                        Duration of the fade effect in seconds. (Default 1)
+  -o OUTPUT, --output OUTPUT
+                        Path for the output video file. Defaults to
+                        'output_video.mp4'.
+
+```
 
 
 ## Development
