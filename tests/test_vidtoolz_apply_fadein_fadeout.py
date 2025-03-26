@@ -16,7 +16,7 @@ def test_create_parser():
     assert result.video == "test.mp4"
     assert result.fade_type == "fadein"
     assert result.duration == 1
-    assert result.output == "output_video.mp4"
+    assert result.output is None
 
 
 def test_plugin(capsys):

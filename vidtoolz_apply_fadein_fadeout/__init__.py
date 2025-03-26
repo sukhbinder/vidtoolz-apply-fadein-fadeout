@@ -1,8 +1,22 @@
 import vidtoolz
+import os
 from vidtoolz_apply_fadein_fadeout.applyfadeinfadeout import (
     apply_fade_effect,
     write_clip,
 )
+
+
+def determine_output_path(input_file, output_file):
+    input_dir, input_filename = os.path.split(input_file)
+    name, _ = os.path.splitext(input_filename)
+
+    if output_file:
+        output_dir, output_filename = os.path.split(output_file)
+        if not output_dir:  # If no directory is specified, use input file's directory
+            return os.path.join(input_dir, output_filename)
+        return output_file
+    else:
+        return os.path.join(input_dir, f"{name}_trim.mp4")
 
 
 def create_parser(subparser):
@@ -26,7 +40,7 @@ def create_parser(subparser):
     parser.add_argument(
         "-o",
         "--output",
-        default="output_video.mp4",
+        default=None,
         help="Path for the output video file. Defaults to 'output_video.mp4'.",
     )
 
@@ -44,8 +58,9 @@ class ViztoolzPlugin:
         self.parser.set_defaults(func=self.run)
 
     def run(self, args):
+        output = determine_output_path(args.video, args.output)
         clip, fps = apply_fade_effect(args.video, args.fade_type, args.duration)
-        write_clip(clip, fps, args.output)
+        write_clip(clip, fps, output)
         print(f"{args.output} written.")
 
     def hello(self, args):

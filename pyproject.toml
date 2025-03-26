@@ -1,6 +1,6 @@
 [project]
 name = "vidtoolz-apply-fadein-fadeout"
-version = "0.0.1"
+version = "0.0.2"
 description = "Apply fadein-fadeout effects on videos "
 readme = "README.md"
 authors = [{name = "Sukhbinder Singh"}]

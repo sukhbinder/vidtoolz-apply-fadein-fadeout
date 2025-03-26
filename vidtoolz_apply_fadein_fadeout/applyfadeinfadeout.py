@@ -1,4 +1,3 @@
-import argparse
 from moviepy import VideoFileClip
 from moviepy import vfx
 
@@ -37,7 +36,10 @@ def write_clip(processed_clip, fps, output_path):
     # Write the result to the output file. Using the same codec as input.
     has_audio = processed_clip.audio is not None
     processed_clip.write_videofile(
-        output_path, codec="libx264",  fps=fps,  audio_codec="aac" if has_audio else None,
+        output_path,
+        codec="libx264",
+        fps=fps,
+        audio_codec="aac" if has_audio else None,
     )
     # Close the clips to free up resources
     processed_clip.close()
