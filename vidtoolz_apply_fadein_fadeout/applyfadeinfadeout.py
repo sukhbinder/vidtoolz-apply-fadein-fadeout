@@ -1,8 +1,8 @@
 from moviepy import VideoFileClip
-from moviepy import vfx
+from moviepy import vfx, afx
 
 
-def apply_fade_effect(video_path, fade_type, duration):
+def apply_fade_effect(video_path, fade_type, duration, only_audio=False):
     """
     Apply fadein or fadeout effect to a video and write the result to an output file.
 
@@ -14,17 +14,34 @@ def apply_fade_effect(video_path, fade_type, duration):
     # Load video clip
     clip = VideoFileClip(video_path) if isinstance(video_path, str) else video_path
     fps = clip.fps
-    # Apply fade effects
-    if fade_type.lower() == "fadein":
-        processed_clip = clip.with_effects([vfx.FadeIn(duration)])
-    elif fade_type.lower() == "fadeout":
-        processed_clip = clip.with_effects([vfx.FadeOut(duration)])
-    elif fade_type.lower() == "both":
-        processed_clip = clip.with_effects(
-            [vfx.FadeIn(duration), vfx.FadeOut(duration)]
-        )
+    if only_audio:
+        if fade_type.lower() == "fadein":
+            processed_clip = clip.with_effects([afx.AudioFadeIn(duration)])
+        elif fade_type.lower() == "fadeout":
+            processed_clip = clip.with_effects([afx.AudioFadeOut(duration)])
+        elif fade_type.lower() == "both":
+            processed_clip = clip.with_effects(
+                [afx.AudioFadeIn(duration), afx.AudioFadeOut(duration)]
+            )
+        else:
+            raise ValueError(
+                "Invalid fade type. Choose 'fadein', 'fadeout', or 'both'."
+            )
+
     else:
-        raise ValueError("Invalid fade type. Choose 'fadein', 'fadeout', or 'both'.")
+        # Apply fade effects
+        if fade_type.lower() == "fadein":
+            processed_clip = clip.with_effects([vfx.FadeIn(duration)])
+        elif fade_type.lower() == "fadeout":
+            processed_clip = clip.with_effects([vfx.FadeOut(duration)])
+        elif fade_type.lower() == "both":
+            processed_clip = clip.with_effects(
+                [vfx.FadeIn(duration), vfx.FadeOut(duration)]
+            )
+        else:
+            raise ValueError(
+                "Invalid fade type. Choose 'fadein', 'fadeout', or 'both'."
+            )
 
     return processed_clip, fps
 

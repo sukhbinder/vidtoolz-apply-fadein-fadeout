@@ -17,6 +17,7 @@ def test_create_parser():
     assert result.fade_type == "fadein"
     assert result.duration == 1
     assert result.output is None
+    assert result.only_audio == False
 
 
 def test_plugin(capsys):

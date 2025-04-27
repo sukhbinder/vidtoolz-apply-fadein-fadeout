@@ -16,7 +16,7 @@ def determine_output_path(input_file, output_file):
             return os.path.join(input_dir, output_filename)
         return output_file
     else:
-        return os.path.join(input_dir, f"{name}_trim.mp4")
+        return os.path.join(input_dir, f"{name}_fade.mp4")
 
 
 def create_parser(subparser):
@@ -44,6 +44,10 @@ def create_parser(subparser):
         help="Path for the output video file. Defaults to 'output_video.mp4'.",
     )
 
+    parser.add_argument(
+        "-oa", "--only-audio", action="store_true", help="Apply effects only on audio."
+    )
+
     return parser
 
 
@@ -59,7 +63,9 @@ class ViztoolzPlugin:
 
     def run(self, args):
         output = determine_output_path(args.video, args.output)
-        clip, fps = apply_fade_effect(args.video, args.fade_type, args.duration)
+        clip, fps = apply_fade_effect(
+            args.video, args.fade_type, args.duration, args.only_audio
+        )
         write_clip(clip, fps, output)
         print(f"{args.output} written.")
 
