@@ -1,11 +1,12 @@
 import os
+from argparse import ArgumentParser, Namespace
 from pathlib import Path
-import pytest
-import moviepy as mpy
-from vidtoolz_apply_fadein_fadeout.applyfadeinfadeout import apply_fade_effect
-import vidtoolz_apply_fadein_fadeout as w
 
-from argparse import Namespace, ArgumentParser
+import moviepy as mpy
+import pytest
+
+import vidtoolz_apply_fadein_fadeout as w
+from vidtoolz_apply_fadein_fadeout.applyfadeinfadeout import apply_fade_effect
 
 IN_GITHUB_ACTIONS = os.getenv("GITHUB_ACTIONS") == "true"
 
@@ -83,14 +84,15 @@ def test_invalid_fade_type(sample_clip):
 
 
 @pytest.mark.skipif(IN_GITHUB_ACTIONS, reason="Test doesn't work in Github Actions.")
-def test_realcase_fadeinout(tmpdir):
-    outfile = tmpdir / "test_output.mp4"
+@pytest.mark.parametrize("fade_type", ["fadein", "fadeout", "both"])
+def test_realcase_fadeinout(tmpdir, fade_type):
+    outfile = tmpdir / f"test_output{fade_type}.mp4"
     testdata = Path(__file__).parent / "test_data"
     videofile = testdata / "test_video.mp4"
     subparser = ArgumentParser().add_subparsers()
     parser = w.create_parser(subparser)
 
-    argv = [str(videofile), "fadein", "-o", str(outfile)]
+    argv = [str(videofile), fade_type, "-o", str(outfile)]
     args = parser.parse_args(argv)
     args.func = None
     w.fadeinout_plugin.run(args)
